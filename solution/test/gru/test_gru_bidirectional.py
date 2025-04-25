@@ -1,40 +1,56 @@
+import unittest
 import torch
 import torch.nn as nn
+import mytorch
 from mytorch.mynn import CustomBidirectionalGRU
 
+class TestCustomBidirectionalGRU(unittest.TestCase):
+    def setUp(self):
+        torch.manual_seed(42)
+        self.input_size = 3
+        self.hidden_size = 10
+        self.num_layers = 2
+        self.batch_size = 2
+        self.seq_len = 5
+        
+        self.gru = nn.GRU(input_size=self.input_size,
+                        hidden_size=self.hidden_size,
+                        num_layers=self.num_layers,
+                        batch_first=True,
+                        bidirectional=True)
+        torch.save(self.gru.state_dict(), 'bidirectional_gru_model.pth')
+        
+        self.custom_gru = CustomBidirectionalGRU(input_size=self.input_size,
+                                               hidden_size=self.hidden_size,
+                                               num_layers=self.num_layers)
+        self.custom_gru.load_state_dict(torch.load('bidirectional_gru_model.pth', weights_only=True))
+        
+        self.x = torch.randn(self.batch_size, self.seq_len, self.input_size)
+        
+    def test_CustomBidirectionalGRU_loading(self):
+        native_state = self.gru.state_dict()
+        custom_state = self.custom_gru.state_dict()
+        
+        self.assertEqual(set(native_state.keys()), set(custom_state.keys()),
+                       "Parameter names don't match")
+        
+        for name in native_state:
+            self.assertTrue(torch.allclose(native_state[name], custom_state[name], atol=1e-6),
+                          f"Parameter {name} values don't match")
+            
+    def test_CustomBidirectionalGRU_forward(self):
+        output_native, hidden_native = self.gru(self.x)
+        output_custom, hidden_custom = self.custom_gru(self.x)
+        
+        self.assertTrue(
+            torch.allclose(output_custom, output_native, atol=1e-6),
+            "Forward pass outputs differ"
+        )
+        
+        self.assertTrue(
+            torch.allclose(hidden_custom, hidden_native, atol=1e-6),
+            "Hidden states differ"
+        )
+
 if __name__ == '__main__':
-    # 创建并保存一个 nn.GRU 模型
-    torch.manual_seed(42)
-    input_size = 3
-    hidden_size = 10
-    num_layers = 2
-    gru = nn.GRU(input_size=input_size, hidden_size=hidden_size, num_layers=num_layers, batch_first=True, bidirectional=True)
-    torch.save(gru.state_dict(), 'bidirectional_gru_model.pth')
-
-    # 创建自定义双向 GRU 模型并加载参数
-    custom_bidirectional_gru = CustomBidirectionalGRU(input_size=input_size, hidden_size=hidden_size, num_layers=num_layers)
-    custom_bidirectional_gru.load_state_dict(torch.load('bidirectional_gru_model.pth', weights_only=True))
-
-    # 打印 state_dict 以验证命名一致
-    print("Custom Bidirectional GRU state_dict:")
-    for key, value in custom_bidirectional_gru.state_dict().items():
-        print(f"{key}: {value.shape}")
-
-    print("\nnn.GRU state_dict:")
-    for key, value in gru.state_dict().items():
-        print(f"{key}: {value.shape}")
-
-    # 验证前向传播结果
-    input_data = torch.randn(2, 5, 3)  # Batch size = 2, Sequence length = 5, Input size = 3
-
-    # 使用 nn.GRU
-    output, hidden = gru(input_data)
-
-    # 使用自定义双向 GRU
-    custom_output, custom_hidden = custom_bidirectional_gru(input_data)
-
-    # 比较结果
-    print("output", output)
-    print("custom_output", custom_output)
-    print("\nOutput close:", torch.allclose(custom_output, output, atol=1e-4))
-    print("Hidden state close:", torch.allclose(custom_hidden, hidden, atol=1e-4))
+    unittest.main(verbosity=mytorch.__test_verbosity__)

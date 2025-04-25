@@ -1,41 +1,59 @@
+import unittest
 import torch
 import torch.nn as nn
+import mytorch
 from mytorch.mynn import CustomConv1d
 
-def test_conv1d():
-    # 配置参数
-    torch.manual_seed(42)
-    in_channels, out_channels = 300, 64
-    kernel_size = 3
-    batch_size = 2
-    width = 100
+class TestCustomConv1d(unittest.TestCase):
+    def setUp(self):
+        torch.manual_seed(42)
+        self.in_channels = 300
+        self.out_channels = 64
+        self.kernel_size = 3
+        self.batch_size = 2
+        self.width = 100
+        self.stride = 1
+        self.padding = 1
 
-    # 原生Conv1d层
-    conv1d = nn.Conv1d(in_channels, out_channels, kernel_size, stride=1, padding=1)
-    torch.save(conv1d.state_dict(), 'conv1d.pth')
-    print("conv1d state_dict:")
-    print("weight:", conv1d.weight.data.size())
-    print("bias:", conv1d.bias.data.size() if conv1d.bias is not None else None)
+        self.conv1d = nn.Conv1d(
+            in_channels=self.in_channels,
+            out_channels=self.out_channels,
+            kernel_size=self.kernel_size,
+            stride=self.stride,
+            padding=self.padding
+        )
+        torch.save(self.conv1d.state_dict(), 'conv1d.pth')
 
-    # 自定义Conv1d层加载参数
-    custom_conv1d = CustomConv1d(in_channels, out_channels, kernel_size, stride=1, padding=1)
-    custom_conv1d.load_state_dict(torch.load('conv1d.pth', weights_only=True))
-    print("\ncustom_conv1d state_dict:")
-    print("weight:", custom_conv1d.weight.data.size())
-    print("bias:", custom_conv1d.bias.data.size() if custom_conv1d.bias is not None else None)
+        self.custom_conv1d = CustomConv1d(
+            in_channels=self.in_channels,
+            out_channels=self.out_channels,
+            kernel_size=self.kernel_size,
+            stride=self.stride,
+            padding=self.padding
+        )
+        self.custom_conv1d.load_state_dict(torch.load('conv1d.pth', weights_only=True))
 
-    # 验证前向传播
-    x = torch.randn(batch_size, in_channels, width)
-    output_native = conv1d(x)
-    output_custom = custom_conv1d(x)
-    is_close = torch.allclose(output_custom, output_native, atol=1e-4)
-    print("\n前向传播结果是否一致:", is_close)
+        self.x = torch.randn(self.batch_size, self.in_channels, self.width)
 
-    # 打印部分结果对比
-    print("\nnn.Conv1d Output (first few elements):")
-    print(output_native[0, 0, :5])
-    print("\nCustomConv1d Output (first few elements):")
-    print(output_custom[0, 0, :5])
+    def test_CustomConv1d_loading(self):
+        native_state = self.conv1d.state_dict()
+        custom_state = self.custom_conv1d.state_dict()
+
+        self.assertEqual(set(native_state.keys()), set(custom_state.keys()),
+                       "Parameter names don't match")
+
+        for name in native_state:
+            self.assertTrue(torch.allclose(native_state[name], custom_state[name], atol=1e-6),
+                          f"Parameter {name} values don't match")
+
+    def test_CustomConv1d_forward(self):
+        output_native = self.conv1d(self.x)
+        output_custom = self.custom_conv1d(self.x)
+
+        self.assertTrue(
+            torch.allclose(output_custom, output_native, atol=1e-4),
+            "Forward pass outputs differ"
+        )
 
 if __name__ == '__main__':
-    test_conv1d()
+    unittest.main(verbosity=mytorch.__test_verbosity__)

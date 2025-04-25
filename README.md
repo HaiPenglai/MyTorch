@@ -12,7 +12,9 @@
 │   ...
 ├── solution/       # 标准答案
 │   ...
-└── demo/           # 教学演示手稿
+├── demo/           # 教学演示手稿
+│   ...
+└── example         # 项目结构案例
     ...
 ```
 
@@ -42,6 +44,7 @@ MyTorch是一个Python实现的简化版深度学习框架，支持`pip install`
 学习路径建议：
 1. 下载项目代码
 2. 观看教学视频
-3. 在exercise中实践
-4. 在solution验证答案
-5. 查看demo获取手稿
+3. 在example理解项目结构
+4. 在exercise中实践
+5. 在solution验证答案
+6. 查看demo获取手稿

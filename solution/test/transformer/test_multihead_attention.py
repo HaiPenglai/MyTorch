@@ -1,73 +1,73 @@
+import unittest
 import torch
 import torch.nn as nn
+import mytorch
 from mytorch.mynn import CustomMultiheadAttention
 
+class TestCustomMultiheadAttention(unittest.TestCase):
+    def setUp(self):
+        torch.manual_seed(42)
+        self.embed_dim = 6
+        self.num_heads = 2
+        self.batch_size = 2
+        self.seq_len = 3
+        self.kv_seq_len = 5
+        
+        self.official_attn = nn.MultiheadAttention(
+            embed_dim=self.embed_dim,
+            num_heads=self.num_heads,
+            dropout=0,
+            batch_first=True
+        )
+        torch.save(self.official_attn.state_dict(), 'multihead_attention.pth')
+        
+        self.custom_attn = CustomMultiheadAttention(
+            embed_dim=self.embed_dim,
+            num_heads=self.num_heads
+        )
+        self.custom_attn.load_state_dict(torch.load('multihead_attention.pth', weights_only=True))
+        
+        self.X = torch.randn(self.batch_size, self.seq_len, self.embed_dim)
+        self.X_cross_kv = torch.randn(self.batch_size, self.kv_seq_len, self.embed_dim)
+    
+    def test_CustomMultiheadAttention_loading(self):
+        native_state = self.official_attn.state_dict()
+        custom_state = self.custom_attn.state_dict()
+        
+        self.assertEqual(set(native_state.keys()), set(custom_state.keys()),
+                        "Parameter names don't match")
+        
+        for name in native_state:
+            self.assertTrue(torch.allclose(native_state[name], custom_state[name], atol=1e-6),
+                           f"Parameter {name} values don't match")
+    
+    def test_CustomMultiheadAttention_self_attention(self):
+        output_native, weights_native = self.official_attn(self.X, self.X, self.X)
+        output_custom, weights_custom = self.custom_attn(self.X, self.X, self.X)
+        
+        self.assertTrue(
+            torch.allclose(output_custom, output_native, atol=1e-5),
+            "Self-attention outputs differ"
+        )
+        
+        self.assertTrue(
+            torch.allclose(weights_custom, weights_native, atol=1e-5),
+            "Self-attention weights differ"
+        )
+    
+    def test_CustomMultiheadAttention_cross_attention(self):
+        output_native, weights_native = self.official_attn(self.X, self.X_cross_kv, self.X_cross_kv)
+        output_custom, weights_custom = self.custom_attn(self.X, self.X_cross_kv, self.X_cross_kv)
+        
+        self.assertTrue(
+            torch.allclose(output_custom, output_native, atol=1e-5),
+            "Cross-attention outputs differ"
+        )
+        
+        self.assertTrue(
+            torch.allclose(weights_custom, weights_native, atol=1e-5),
+            "Cross-attention weights differ"
+        )
+
 if __name__ == '__main__':
-    # 验证与官方实现的兼容性
-    torch.manual_seed(42)
-    embed_dim = 6
-    num_heads = 2
-    
-    # 创建对比模型（设置 batch_first=True）
-    official_attn = nn.MultiheadAttention(embed_dim, num_heads, dropout=0, batch_first=True)
-    custom_attn = CustomMultiheadAttention(embed_dim, num_heads)
-    
-    torch.save(official_attn.state_dict(), "transformer_multihead_attention.pth")
-    
-    # 参数拷贝（确保投影矩阵正确对应）
-    custom_attn.load_state_dict(torch.load("transformer_multihead_attention.pth", weights_only=True))
-
-    # 测试数据（自注意力）
-    X = torch.randn(2, 3, 6)  # [batch, seq, feat]
-    Xq = Xk = Xv = X
-
-    # 官方实现（自注意力）
-    official_output, official_attn_weights = official_attn(Xq, Xk, Xv)
-
-    # 自定义实现（自注意力）
-    custom_output, custom_attn_weights = custom_attn(Xq, Xk, Xv)
-
-    # 比较自注意力结果
-    print("自注意力测试结果：")
-    print("官方实现 output 形状:", official_output.shape)
-    print("自定义实现 output 形状:", custom_output.shape)
-    print("官方实现 attn_weights 形状:", official_attn_weights.shape)
-    print("自定义实现 attn_weights 形状:", custom_attn_weights.shape)
-
-    # 比较 output
-    output_diff = torch.max(torch.abs(custom_output - official_output))
-    print("\noutput 最大差异:", output_diff)
-    print("output 结果一致:", torch.allclose(custom_output, official_output, atol=1e-5))
-
-    # 比较 attn_weights
-    attn_diff = torch.max(torch.abs(custom_attn_weights - official_attn_weights))
-    print("\nattn_weights 最大差异:", attn_diff)
-    print("attn_weights 结果一致:", torch.allclose(custom_attn_weights, official_attn_weights, atol=1e-5))
-
-    # 测试交叉注意力
-    Xq = torch.randn(2, 3, 6)
-    Xk = torch.randn(2, 5, 6)  # 不同序列长度
-    Xv = Xk
-
-    # 官方实现（交叉注意力）
-    official_cross_output, official_cross_attn_weights = official_attn(Xq, Xk, Xv)
-
-    # 自定义实现（交叉注意力）
-    custom_cross_output, custom_cross_attn_weights = custom_attn(Xq, Xk, Xv)
-
-    # 比较交叉注意力结果
-    print("\n交叉注意力测试结果：")
-    print("官方实现 output 形状:", official_cross_output.shape)
-    print("自定义实现 output 形状:", custom_cross_output.shape)
-    print("官方实现 attn_weights 形状:", official_cross_attn_weights.shape)
-    print("自定义实现 attn_weights 形状:", custom_cross_attn_weights.shape)
-
-    # 比较 output
-    cross_output_diff = torch.max(torch.abs(custom_cross_output - official_cross_output))
-    print("\noutput 最大差异:", cross_output_diff)
-    print("output 结果一致:", torch.allclose(custom_cross_output, official_cross_output, atol=1e-5))
-
-    # 比较 attn_weights
-    cross_attn_diff = torch.max(torch.abs(custom_cross_attn_weights - official_cross_attn_weights))
-    print("\nattn_weights 最大差异:", cross_attn_diff)
-    print("attn_weights 结果一致:", torch.allclose(custom_cross_attn_weights, official_cross_attn_weights, atol=1e-5))
+    unittest.main(verbosity=mytorch.__test_verbosity__)

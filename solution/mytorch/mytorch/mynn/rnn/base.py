@@ -1,7 +1,6 @@
 import torch
 import torch.nn as nn
 import math
-from mytorch.quantization import qmatmul
 
 class CustomRNN(nn.Module):
     def __init__(self, input_size, hidden_size, num_layers, batch_first=True):

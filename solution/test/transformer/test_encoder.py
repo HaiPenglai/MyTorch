@@ -1,60 +1,64 @@
+import unittest
 import torch
 import torch.nn as nn
-from mytorch.mynn import CustomTransformerEncoderLayer, CustomTransformerEncoder  # 引入自定义的 TransformerEncoderLayer
+import mytorch
+from mytorch.mynn import CustomTransformerEncoderLayer, CustomTransformerEncoder
+
+class TestCustomTransformerEncoder(unittest.TestCase):
+    def setUp(self):
+        torch.manual_seed(42)
+        
+        self.d_model = 300
+        self.n_heads = 10
+        self.dim_feedforward = 512
+        self.dropout = 0.0
+        self.num_layers = 2
+        self.batch_size = 2
+        self.seq_len = 10
+        
+        encoder_layer = nn.TransformerEncoderLayer(
+            d_model=self.d_model,
+            nhead=self.n_heads,
+            dim_feedforward=self.dim_feedforward,
+            dropout=self.dropout,
+            batch_first=True
+        )
+        self.transformer_encoder = nn.TransformerEncoder(encoder_layer, num_layers=self.num_layers)
+        
+        custom_encoder_layer = CustomTransformerEncoderLayer(
+            d_model=self.d_model,
+            nhead=self.n_heads,
+            dim_feedforward=self.dim_feedforward,
+            dropout=self.dropout
+        )
+        self.custom_transformer_encoder = CustomTransformerEncoder(
+            custom_encoder_layer,
+            num_layers=self.num_layers
+        )
+        
+        self.custom_transformer_encoder.load_state_dict(self.transformer_encoder.state_dict())
+        
+        self.input_data = torch.randn(self.batch_size, self.seq_len, self.d_model)
+    
+    def test_CustomTransformerEncoder_loading(self):
+        native_state = self.transformer_encoder.state_dict()
+        custom_state = self.custom_transformer_encoder.state_dict()
+        
+        self.assertEqual(set(native_state.keys()), set(custom_state.keys()),
+                       "Parameter names don't match")
+        
+        for name in native_state:
+            self.assertTrue(torch.allclose(native_state[name], custom_state[name], atol=1e-6),
+                          f"Parameter {name} values don't match")
+    
+    def test_CustomTransformerEncoder_forward(self):
+        output_native = self.transformer_encoder(self.input_data)
+        output_custom = self.custom_transformer_encoder(self.input_data)
+        
+        self.assertTrue(
+            torch.allclose(output_custom, output_native, atol=1e-4),
+            "Forward pass outputs differ"
+        )
 
 if __name__ == '__main__':
-    torch.manual_seed(42)
-    
-    # 定义模型参数
-    d_model = 300
-    n_heads = 10
-    dim_feedforward = 512
-    dropout = 0.0
-    num_layers = 2
-
-    # 创建 PyTorch 的 TransformerEncoderLayer 实例
-    encoder_layer = nn.TransformerEncoderLayer(d_model=d_model, nhead=n_heads,
-                                               dim_feedforward=dim_feedforward, dropout=dropout, batch_first=True)
-
-    # 创建 PyTorch 的 TransformerEncoder 实例
-    transformer_encoder = nn.TransformerEncoder(encoder_layer, num_layers=num_layers)
-
-    # 保存 PyTorch 的 TransformerEncoder 的 state_dict
-    torch.save(transformer_encoder.state_dict(), 'transformer_encoder.pth')
-
-    # 创建自定义的 TransformerEncoderLayer 实例
-    custom_encoder_layer = CustomTransformerEncoderLayer(d_model=d_model, nhead=n_heads,
-                                                         dim_feedforward=dim_feedforward, dropout=dropout)
-
-    # 创建自定义的 TransformerEncoder 实例
-    custom_transformer_encoder = CustomTransformerEncoder(custom_encoder_layer, num_layers=num_layers)
-
-    # 加载保存的 state_dict
-    # custom_transformer_encoder.load_state_dict(torch.load('transformer_encoder.pth', weights_only=True))
-    custom_transformer_encoder.load_state_dict(transformer_encoder.state_dict())
-
-    # 打印 state_dict 以验证命名一致
-    print("Custom TransformerEncoder state_dict:")
-    for key, value in custom_transformer_encoder.state_dict().items():
-        print(f"{key}: {value.shape}")
-
-    print("\nnn.TransformerEncoder state_dict:")
-    for key, value in transformer_encoder.state_dict().items():
-        print(f"{key}: {value.shape}")
-
-    # 随机生成输入数据
-    # input_data = torch.randn(64, 64, 300)
-    input_data = torch.load("embedded_in_transformer.pt", weights_only=True)['embedded']
-    print("input_data shape", input_data.shape)
-
-    # 使用 PyTorch 的 TransformerEncoder
-    output = transformer_encoder(input_data)
-
-    # 使用自定义的 TransformerEncoder
-    custom_output = custom_transformer_encoder(input_data)
-
-    # 比较结果
-    # print("output", output)
-    # print("custom_output", custom_output)
-    print("\nOutput close:", torch.allclose(custom_output, output, atol=1e-4))
-    print(torch.max(torch.abs(custom_output - output)))
+    unittest.main(verbosity=mytorch.__test_verbosity__)

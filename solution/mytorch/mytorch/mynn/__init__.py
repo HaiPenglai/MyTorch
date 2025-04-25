@@ -12,7 +12,6 @@ from .lstm import (
     CustomBidirectionalLSTM,
 )
 
-# Transformer 系列
 from .transformer import (
     CustomMultiheadAttention, CustomTransformerEncoder, CustomTransformerEncoderLayer,
 )
@@ -23,8 +22,10 @@ from .embedding import (
 
 from .mlp import (
     CustomLinear,
-    CustomLayerNorm,
-    CustomBatchNorm
+    CustomReLU,
+    CustomSigmoid,
+    CustomSoftmax,
+    CustomTanh,
 )
 
 from .bert import (
@@ -39,11 +40,13 @@ from .conv import (
     CustomMaxPool1d,
 )
 
-from .func import(
-    CustomReLU,
-    CustomSigmoid,
-    CustomSoftmax,
-    CustomTanh,
-    CustomCrossEntropyLoss,
-    CustomNorm
+from .norm import(
+    CustomNorm,
+    CustomBatchNorm,
+    CustomLayerNorm,
 )
+
+from .loss import (
+    CustomCrossEntropyLoss,
+)
+
