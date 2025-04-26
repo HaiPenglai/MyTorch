@@ -8,13 +8,10 @@
 ├── exercise/
 │   ├── mytorch/    # 在这里写TODO实现算子
 │   ├── test/       # 在这里写TODO实现测试
-│   └── Lab1.ipynb  # 在这里找到TODO位置/回答问题
+│   ├── Lab1.ipynb  # 在这里找到TODO位置/回答问题
+|   └──example      # 在这里写TODO理解项目结构
 │   ...
-├── solution/       # 标准答案
-│   ...
-├── demo/           # 教学演示手稿
-│   ...
-└── example         # 项目结构案例
+└── solution/       # 标准答案
     ...
 ```
 
@@ -28,6 +25,29 @@
 ```bash
 git clone https://github.com/HaiPenglai/MyTorch.git
 ```
+
+## 如何安装mytorch
+
+下载完成后
+
+```shell
+cd MyTorch\solution
+pip install -e mytorch
+```
+
+即可安装参考答案实现的mytorch，自己的mytorch需要在`MyTorch\exercise`中实现后同理安装
+
+
+检查安装正确性:
+
+```python
+import mytorch
+print(mytorch.__version__)
+```
+
+## ❓ 环境装不上怎么办
+
+去看Lab0视频，手把手在新电脑上安装环境
 
 ## 🧠 MyTorch介绍
 
@@ -44,7 +64,10 @@ MyTorch是一个Python实现的简化版深度学习框架，支持`pip install`
 学习路径建议：
 1. 下载项目代码
 2. 观看教学视频
-3. 在example理解项目结构
-4. 在exercise中实践
-5. 在solution验证答案
-6. 查看demo获取手稿
+3. 在exercise中实践
+4. 在solution验证答案
+
+## Lab介绍
+- Lab0:手把手安装环境
+- Lab1:了解pytorch的文件结构，了解单元测试
+- Lab2:

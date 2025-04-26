@@ -9,3 +9,6 @@
 !**/*.py
 !**/*.ipynb
 !**/.gitignore
+
+demo/**
+temp.md
