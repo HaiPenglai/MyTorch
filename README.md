@@ -1,4 +1,4 @@
-# 🚀 MyTorch - 从零手写pytorch.nn(开发中，每周更新)
+# 🚀 MyTorch - 从零手写pytorch.nn
 
 ## 👨💻 作者：海蓬莱 &   
 
@@ -6,10 +6,11 @@
 
 ```
 ├── exercise/
+│   ├── Lab_.ipynb  # 在这里找到TODO位置/回答问题
+│   ├── example     # 在这里写TODO理解项目结构
 │   ├── mytorch/    # 在这里写TODO实现算子
 │   ├── test/       # 在这里写TODO实现测试
-│   ├── Lab1.ipynb  # 在这里找到TODO位置/回答问题
-|   └──example      # 在这里写TODO理解项目结构
+|   └── model       # 在这里写TODO用自己的算子训练模型 
 │   ...
 └── solution/       # 标准答案
     ...
@@ -26,7 +27,7 @@
 git clone https://github.com/HaiPenglai/MyTorch.git
 ```
 
-## 如何安装mytorch
+## 🛠️ 如何安装mytorch
 
 下载完成后
 
@@ -67,7 +68,7 @@ MyTorch是一个Python实现的简化版深度学习框架，支持`pip install`
 3. 在exercise中实践
 4. 在solution验证答案
 
-## Lab介绍
+## 📖 Lab介绍
 - Lab0:手把手安装环境
 - Lab1:了解pytorch的文件结构，了解单元测试
 - Lab2:
