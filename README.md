@@ -1,4 +1,4 @@
-# 🚀 MyTorch - 从零手写pytorch.nn
+# 🚀 MyTorch - 手写pytorch.nn(机器学习系统系列项目)
 
 ## 👨💻 作者：海蓬莱 &   
 
@@ -70,5 +70,5 @@ MyTorch是一个Python实现的简化版深度学习框架，支持`pip install`
 
 ## 📖 Lab介绍
 - Lab0:手把手安装环境
-- Lab1:了解pytorch的文件结构，了解单元测试
+- Lab1:了解pytorch的文件结构，实现单元测试
 - Lab2:
