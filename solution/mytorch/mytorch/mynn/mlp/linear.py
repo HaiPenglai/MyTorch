@@ -7,8 +7,11 @@ class CustomLinear(nn.Module):
         self.in_features = in_features
         self.out_features = out_features
         
-        # 定义权重和偏置
+        # TODO，创建一个可训练的权重矩阵W，注意X@W.T要可以运算
+        '''《pass》'''
+        #《
         self.weight = nn.Parameter(torch.Tensor(out_features, in_features))
+        #》
         if bias:
             self.bias = nn.Parameter(torch.Tensor(out_features))
         else:
@@ -18,13 +21,25 @@ class CustomLinear(nn.Module):
         self.reset_parameters()
     
     def reset_parameters(self):
-        nn.init.kaiming_uniform_(self.weight, a=math.sqrt(5))
+        # TODO使用何凯明均匀初始化
+        '''《pass》'''
+        #《
+        nn.init.kaiming_uniform_(self.weight)
+        #》
         if self.bias is not None:
             nn.init.zeros_(self.bias)  # 偏置初始化为零
     
     def forward(self, x):
-        output = x @ self.weight.T  # 矩阵乘法
+        # TODO进行X@W.T+b
+        '''《pass》'''
+        #《
+        output = x @ self.weight.T
+        #》
         if self.bias is not None:
-            output += self.bias      # 添加偏置
+            # TODO加上偏置
+            '''《pass》'''
+            #《
+            output += self.bias
+            #》
         return output
     

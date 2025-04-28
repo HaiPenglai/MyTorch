@@ -1,5 +1,5 @@
 ﻿def hello():
-    print("This is the hello function from packageB")
+    print("hello")
 
 def bye():
-    print("This is the bye function from packageB")
+    print("bye")

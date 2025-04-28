@@ -7,17 +7,22 @@ class CustomCrossEntropyLoss(nn.Module):
         self.reduction = reduction
         
     def forward(self, logits, targets):
-        # 数值稳定的LogSoftmax计算
-        log_softmax = logits - torch.logsumexp(logits, dim=1, keepdim=True)
+        log_softmax = logits.log_softmax(dim=-1)
         
-        # 计算NLL损失
-        loss = -log_softmax.gather(1, targets.unsqueeze(1)).squeeze(1)
+        batch_size = logits.size(0)
+        # TODO，填写一句话计算出每个样本的交叉熵损失
+        '''《pass》'''
+        #《
+        loss = -log_softmax[torch.arange(batch_size), targets]
+        #》
         
-        # 根据reduction参数返回结果
         if self.reduction == 'mean':
+            # TODO，用取均值的方法处理多个样本的交叉熵损失
+            '''《pass》'''
+            #《
             return loss.mean()
+            #》
         elif self.reduction == 'sum':
             return loss.sum()
-        else:  # 'none'
+        else:
             return loss
-    

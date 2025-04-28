@@ -1,67 +1,37 @@
+import unittest
 import torch
 import torch.nn as nn
+import mytorch
 from mytorch.mynn import CustomSoftmax
 
-def test_softmax():
-    # 测试数据
-    input_tensor = torch.tensor([[-1, 0, 1], [0, 1, 2]]).float()
-    print("Input Tensor:")
-    print(input_tensor)
-    
-    # 测试dim=1的情况
-    print("\nTesting dim=1:")
-    # 原生Softmax
-    softmax = nn.Softmax(dim=1)
-    output_native = softmax(input_tensor)
-    print("\nnn.Softmax Output (dim=1):")
-    print(output_native)
-    
-    # 自定义Softmax
-    custom_softmax = CustomSoftmax(dim=1)
-    output_custom = custom_softmax(input_tensor)
-    print("\nCustomSoftmax Output (dim=1):")
-    print(output_custom)
-    
-    # 比较结果
-    is_close = torch.allclose(output_custom, output_native, atol=1e-6)
-    print("\n前向传播结果是否一致:", is_close)
-    
-    # 测试dim=0的情况
-    print("\nTesting dim=0:")
-    # 原生Softmax
-    softmax = nn.Softmax(dim=0)
-    output_native = softmax(input_tensor)
-    print("\nnn.Softmax Output (dim=0):")
-    print(output_native)
-    
-    # 自定义Softmax
-    custom_softmax = CustomSoftmax(dim=0)
-    output_custom = custom_softmax(input_tensor)
-    print("\nCustomSoftmax Output (dim=0):")
-    print(output_custom)
-    
-    # 比较结果
-    is_close = torch.allclose(output_custom, output_native, atol=1e-6)
-    print("\n前向传播结果是否一致:", is_close)
-    
-    # 测试极端值
-    print("\nTesting Extreme Values:")
-    extreme_input = torch.tensor([[1000, 1001, 1002]]).float()
-    print("Input:", extreme_input)
-    
-    # 原生Softmax
-    output_native = nn.Softmax(dim=1)(extreme_input)
-    print("\nnn.Softmax Output:")
-    print(output_native)
-    
-    # 自定义Softmax
-    output_custom = CustomSoftmax(dim=1)(extreme_input)
-    print("\nCustomSoftmax Output:")
-    print(output_custom)
-    
-    # 比较结果
-    is_close = torch.allclose(output_custom, output_native, atol=1e-6)
-    print("\n前向传播结果是否一致:", is_close)
+class TestCustomSoftmax(unittest.TestCase):
+    def setUp(self):
+        torch.manual_seed(42)
+        self.large_input = torch.tensor([[1000, 1001, 1002], [0, 1, 2]])
+        self.multi_dim_input = torch.randn(2, 3, 4)
+
+    def test_large_values(self):
+        custom_softmax = CustomSoftmax(dim=-1)
+        output_custom = custom_softmax(self.large_input)
+        
+        self.assertFalse(torch.isnan(output_custom).any())
+        self.assertFalse(torch.isinf(output_custom).any())
+        
+        sums = torch.sum(output_custom, dim=-1)
+        self.assertTrue(torch.allclose(sums, torch.ones_like(sums), atol=1e-6))
+
+    def test_dimensions(self):
+        custom_softmax = CustomSoftmax(dim=-1)
+        native_softmax = nn.Softmax(dim=-1)
+        output_custom = custom_softmax(self.multi_dim_input)
+        output_native = native_softmax(self.multi_dim_input)
+        self.assertTrue(torch.allclose(output_custom, output_native, atol=1e-6))
+
+        custom_softmax_dim0 = CustomSoftmax(dim=0)
+        native_softmax_dim0 = nn.Softmax(dim=0)
+        output_custom_dim0 = custom_softmax_dim0(self.multi_dim_input)
+        output_native_dim0 = native_softmax_dim0(self.multi_dim_input)
+        self.assertTrue(torch.allclose(output_custom_dim0, output_native_dim0, atol=1e-6))
 
 if __name__ == '__main__':
-    test_softmax()
+    unittest.main(verbosity=mytorch.__test_verbosity__)
