@@ -21,7 +21,7 @@ class CustomLinear(nn.Module):
         self.reset_parameters()
     
     def reset_parameters(self):
-        # TODO使用何凯明均匀初始化
+        # TODO使用何凯明均匀初始化, 原地修改
         '''《pass》'''
         #《
         nn.init.kaiming_uniform_(self.weight)
@@ -30,8 +30,10 @@ class CustomLinear(nn.Module):
             nn.init.zeros_(self.bias)  # 偏置初始化为零
     
     def forward(self, x):
-        # TODO进行X@W.T+b
-        '''《pass》'''
+        # TODO进行X@W.T， 如果没有偏置就到此为止了
+        '''《
+        output = None
+        》'''
         #《
         output = x @ self.weight.T
         #》

@@ -79,18 +79,16 @@ class SimpleMLP(nn.Module):
         x = x.view(-1, 28 * 28)
         #》
         x = self.relu(self.fc1(x))
-        #TODO 再次来一个线性层+relu
-        '''《pass》'''
-        #《
         x = self.relu(self.fc2(x))
-        #》
         x = self.fc3(x)
         return x
 
 # 初始化模型、损失函数和优化器
 model = SimpleMLP()
 #TODO 选择交叉熵损失
-'''《pass》'''
+'''《
+criterion = None
+》'''
 #《
 criterion = nn.CrossEntropyLoss()
 #》
@@ -102,10 +100,9 @@ def train(epoch):
     for batch_idx, (data, target) in enumerate(train_loader):
         optimizer.zero_grad()
         #TODO 模型前向传播
-        '''
+        '''《
         output = None
-        loss = None
-        '''
+        》'''
         #《
         output = model(data)
         #》
@@ -131,9 +128,9 @@ def test():
             output = model(data)
             test_loss += criterion(output, target).item()
             #TODO 获取概率最大的预测， 
-            '''
-            predict = None
-            '''
+            '''《
+            pred = None
+            》'''
             #《
             pred = output.argmax(dim=1)
             #》
@@ -141,7 +138,9 @@ def test():
     
     test_loss /= len(test_loader.dataset)
     #TODO计算准确率，之前算出了预测正确的样本数，除以测试集的样本个数[注意，len(test_loader)表示批次数，len(test_loader.dataset)才是样本总数]， 大约0.95就是正常的
-    '''pass'''
+    '''《
+    accuracy = None
+    》'''
     #《
     accuracy = correct / len(test_loader.dataset)
     #》
