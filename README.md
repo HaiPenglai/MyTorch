@@ -1,4 +1,4 @@
-# 🚀 MyTorch - 手写pytorch.nn(机器学习系统系列项目)
+# 🚀 MyTorch (机器学习系统系列项目)
 
 ## 👨💻 作者：海蓬莱 (手推公式和手敲代码视频见b站)
 
@@ -20,7 +20,7 @@
 
 阅读问题、填写TODO、通过测试
 
-![](.assets/readme/how_to_do_lab.png)
+![how_to_do_lab.png (1249×463)](https://raw.githubusercontent.com/HaiPenglai/MyTorch/refs/heads/master/.assets/readme/how_to_do_lab.png)
 
 ## ⬇️ 如何下载
 
@@ -58,9 +58,9 @@ print(mytorch.__version__)
 
 ## 🧠 MyTorch介绍
 
-MyTorch是一个Python实现的简化版深度学习框架，支持`pip install`一键安装。我们在不使用`torch.nn`的情况下：
+MyTorch是一个简化版深度学习框架，支持`pip install`一键安装。我们:
 
-✅ 从零实现了多种神经网络：
+✅ 手写实现了多种神经网络：
 
 ✅ 用自己实现的神经网络在多种数据集上训练了模型：
 
@@ -73,8 +73,3 @@ MyTorch是一个Python实现的简化版深度学习框架，支持`pip install`
 2. 观看演示视频
 3. 在exercise中实践
 4. 在solution验证答案
-
-## 📖 Lab介绍
-- Lab0:手把手安装环境
-- Lab1:了解pytorch的文件结构，实现单元测试
-- Lab2:

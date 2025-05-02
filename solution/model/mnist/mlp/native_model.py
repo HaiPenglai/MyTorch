@@ -1,5 +1,5 @@
 from openai import images
-import torch
+import torch 
 import torch.nn as nn
 import torch.optim as optim
 from torchvision import datasets, transforms

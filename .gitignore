@@ -8,7 +8,10 @@
 !**/*.md
 !**/*.py
 !**/*.ipynb
+!**/*.cu
+!**/*.cpp
 !**/.gitignore
+
 
 demo/**
 temp.md
