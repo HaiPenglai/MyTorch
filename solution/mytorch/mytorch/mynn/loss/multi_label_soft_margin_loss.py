@@ -1,9 +1,9 @@
 import torch
 import torch.nn as nn
 
-class MultiLabelSoftMarginLoss(nn.Module):
+class CustomMultiLabelSoftMarginLoss(nn.Module):
     def __init__(self, weight=None, reduction='mean'):
-        super(MultiLabelSoftMarginLoss, self).__init__()
+        super(CustomMultiLabelSoftMarginLoss, self).__init__()
         self.weight = weight
         self.reduction = reduction
         

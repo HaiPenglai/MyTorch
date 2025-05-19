@@ -18,4 +18,5 @@ from .margin_ranking_loss import CustomMarginRankingLoss
 from .cosine_embedding_loss import CustomCosineEmbeddingLoss
 from .triplet_margin_loss import CustomTripletMarginLoss
 from .triplet_margin_with_distance_loss import CustomTripletMarginWithDistanceLoss
-from .multi_label_soft_margin_loss import MultiLabelSoftMarginLoss
+from .multi_label_soft_margin_loss import CustomMultiLabelSoftMarginLoss
+from .ctc_loss import CustomCTCLoss
