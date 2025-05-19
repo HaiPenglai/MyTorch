@@ -64,5 +64,11 @@ from .loss import (
     CustomSoftMarginLoss,
     CustomHingeEmbeddingLoss,
     CustomMultiLabelMarginLoss,
+    CustomMultiMarginLoss,
+    CustomMarginRankingLoss,
+    CustomCosineEmbeddingLoss,
+    CustomTripletMarginLoss,
+    CustomTripletMarginWithDistanceLoss,
+    MultiLabelSoftMarginLoss,
 )
 

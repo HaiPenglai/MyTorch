@@ -13,5 +13,9 @@ from .huber_loss import CustomHuberLoss
 from .soft_margin_loss import CustomSoftMarginLoss
 from .hinge_embedding_loss import CustomHingeEmbeddingLoss
 from .multi_label_margin_loss import CustomMultiLabelMarginLoss
-
-
+from .multi_margin_loss import CustomMultiMarginLoss
+from .margin_ranking_loss import CustomMarginRankingLoss
+from .cosine_embedding_loss import CustomCosineEmbeddingLoss
+from .triplet_margin_loss import CustomTripletMarginLoss
+from .triplet_margin_with_distance_loss import CustomTripletMarginWithDistanceLoss
+from .multi_label_soft_margin_loss import MultiLabelSoftMarginLoss
