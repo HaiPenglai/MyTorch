@@ -50,5 +50,19 @@ from .norm import(
 
 from .loss import (
     CustomCrossEntropyLoss,
+    CustomBCELoss,
+    CustomBCEWithLogitsLoss,
+    CustomL1Loss,
+    CustomNLLLoss,
+    CustomNLLLoss2d,
+    CustomPoissonNLLLoss,
+    CustomGaussianNLLLoss,
+    CustomKLDivLoss,
+    CustomMSELoss,
+    CustomSmoothL1Loss,
+    CustomHuberLoss,
+    CustomSoftMarginLoss,
+    CustomHingeEmbeddingLoss,
+    CustomMultiLabelMarginLoss,
 )
 

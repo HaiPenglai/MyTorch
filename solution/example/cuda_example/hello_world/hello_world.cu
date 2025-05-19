@@ -16,7 +16,7 @@ int main()
     printf("Hello World from CPU!\n");
 
     // TODO 启动2个块，每个块4个线程的核函数, 对应一个grid
-    grid_size=2, block_size=4;
+    int grid_size=2, block_size=4;
     helloWorld<<<grid_size, block_size>>>();
 
     // 等待GPU完成

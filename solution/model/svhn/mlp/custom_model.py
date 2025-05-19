@@ -5,6 +5,7 @@ import torch.optim as optim
 from torchvision import datasets, transforms
 from torch.utils.data import DataLoader
 import matplotlib.pyplot as plt
+from mytorch import mynn
 
 # 1. 数据预处理和加载
 def load_svhn(batch_size=128):
@@ -42,10 +43,10 @@ class MLP(nn.Module):
     def __init__(self, input_size=32 * 32 * 3, hidden_size=512, num_classes=10):
         super(MLP, self).__init__()
         self.flatten = nn.Flatten()
-        self.fc1 = nn.Linear(input_size, hidden_size)
-        self.relu = nn.ReLU()
-        self.fc2 = nn.Linear(hidden_size, hidden_size//2)
-        self.fc3 = nn.Linear(hidden_size//2, num_classes)
+        self.fc1 = mynn.MyLinear(input_size, hidden_size)
+        self.relu = mynn.MyReLU()
+        self.fc2 = mynn.MyLinear(hidden_size, hidden_size//2)
+        self.fc3 = mynn.MyLinear(hidden_size//2, num_classes)
         self.dropout = nn.Dropout(0.5)
         
     def forward(self, x):

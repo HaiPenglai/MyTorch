@@ -1,1 +1,17 @@
 from .cross_entropy import CustomCrossEntropyLoss
+from .bce_loss import CustomBCELoss
+from .bce_with_logits_loss import CustomBCEWithLogitsLoss
+from .l1_loss import CustomL1Loss
+from .nll_loss import CustomNLLLoss
+from .nll_loss2d import CustomNLLLoss2d
+from .poisson_nll_loss import CustomPoissonNLLLoss
+from .gaussian_nll_loss import CustomGaussianNLLLoss
+from .kl_div_loss import CustomKLDivLoss
+from .mse_loss import CustomMSELoss
+from .smooth_l1_loss import CustomSmoothL1Loss
+from .huber_loss import CustomHuberLoss
+from .soft_margin_loss import CustomSoftMarginLoss
+from .hinge_embedding_loss import CustomHingeEmbeddingLoss
+from .multi_label_margin_loss import CustomMultiLabelMarginLoss
+
+
