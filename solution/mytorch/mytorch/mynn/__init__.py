@@ -36,6 +36,13 @@ from .activation import (
     CustomSiLU, MySiLU,
     CustomHardSwish, MyHardSwish,
     CustomELU, MyELU,
+    CustomGELU, MyGELU,
+    CustomHardShrink, MyHardShrink,
+    CustomLeakyReLU, MyLeakyReLU,
+    CustomLogSigmoid, MyLogSigmoid,
+    CustomSoftplus, MySoftplus,
+    CustomSoftShrink, MySoftShrink,
+    CustomLogSoftmax, MyLogSoftmax,
 )
 
 from .conv import (

@@ -30,6 +30,34 @@ from .elu import (
     CustomELU, MyELU
 )
 
+from .gelu import (
+    CustomGELU, MyGELU
+)
+
+from .hardshrink import (
+    CustomHardShrink, MyHardShrink
+)
+
+from .leakyrelu import (
+    CustomLeakyReLU, MyLeakyReLU
+)
+
+from .logsigmoid import (
+    CustomLogSigmoid, MyLogSigmoid
+)
+
+from .softplus import (
+    CustomSoftplus, MySoftplus
+)
+
+from .softshrink import (
+    CustomSoftShrink, MySoftShrink
+)
+
+from .logsoftmax import (
+    CustomLogSoftmax, MyLogSoftmax
+)
+
 from .sigmoid import (
     CustomSigmoid, MySigmoid
 )
