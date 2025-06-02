@@ -29,7 +29,8 @@ from .activation import (
     CustomReLU, MyReLU,
     CustomSigmoid, MySigmoid,
     CustomSoftmax, MySoftmax,
-    CustomTanh, MyTanh
+    CustomTanh, MyTanh,
+    CustomReLU6, MyReLU6,
 )
 
 from .conv import (
