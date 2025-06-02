@@ -1,6 +1,4 @@
 # RNN 系列
-from mytorch.mynn.mlp.softmax import MySoftmax
-from mytorch.mynn.mlp.tanh import MyTanh
 from .rnn import (
     CustomRNN,
     CustomBidirectionalRNN,
@@ -24,15 +22,14 @@ from .embedding import (
 
 from .mlp import (
     CustomLinear, MyLinear,
+
+)
+
+from .activation import (
     CustomReLU, MyReLU,
     CustomSigmoid, MySigmoid,
     CustomSoftmax, MySoftmax,
     CustomTanh, MyTanh
-)
-
-from .bert import (
-    CustomDistilBert,
-    DistilBertConfig,
 )
 
 from .conv import (
