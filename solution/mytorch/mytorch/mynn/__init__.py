@@ -31,6 +31,11 @@ from .activation import (
     CustomSoftmax, MySoftmax,
     CustomTanh, MyTanh,
     CustomReLU6, MyReLU6,
+    CustomHardTanh, MyHardTanh,
+    CustomHardSigmoid, MyHardSigmoid,
+    CustomSiLU, MySiLU,
+    CustomHardSwish, MyHardSwish,
+    CustomELU, MyELU,
 )
 
 from .conv import (
