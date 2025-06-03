@@ -43,6 +43,12 @@ from .activation import (
     CustomSoftplus, MySoftplus,
     CustomSoftShrink, MySoftShrink,
     CustomLogSoftmax, MyLogSoftmax,
+    CustomThreshold, MyThreshold,
+    CustomRReLU, MyRReLU,
+    CustomMish, MyMish,
+    CustomCELU, MyCELU,
+    CustomSELU, MySELU,
+    CustomGLU, MyGLU,
 )
 
 from .conv import (

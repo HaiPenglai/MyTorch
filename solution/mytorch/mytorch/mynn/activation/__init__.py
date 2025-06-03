@@ -58,6 +58,30 @@ from .logsoftmax import (
     CustomLogSoftmax, MyLogSoftmax
 )
 
+from .threshold import (
+    CustomThreshold, MyThreshold
+)
+
+from .rrelu import (
+    CustomRReLU, MyRReLU
+)
+
+from .mish import (
+    CustomMish, MyMish
+)
+
+from .celu import (
+    CustomCELU, MyCELU
+)
+
+from .selu import (
+    CustomSELU, MySELU
+)
+
+from .glu import (
+    CustomGLU, MyGLU
+)
+
 from .sigmoid import (
     CustomSigmoid, MySigmoid
 )
