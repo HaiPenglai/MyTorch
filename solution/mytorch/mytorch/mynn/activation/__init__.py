@@ -82,6 +82,26 @@ from .glu import (
     CustomGLU, MyGLU
 )
 
+from .prelu import (
+    CustomPReLU, MyPReLU
+)
+
+from .softsign import (
+    CustomSoftsign, MySoftsign
+)
+
+from .tanhshrink import (
+    CustomTanhshrink, MyTanhshrink
+)
+
+from .softmin import (
+    CustomSoftmin, MySoftmin
+)
+
+from .softmax2d import (
+    CustomSoftmax2d, MySoftmax2d
+)
+
 from .sigmoid import (
     CustomSigmoid, MySigmoid
 )

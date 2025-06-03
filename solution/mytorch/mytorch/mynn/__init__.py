@@ -49,6 +49,11 @@ from .activation import (
     CustomCELU, MyCELU,
     CustomSELU, MySELU,
     CustomGLU, MyGLU,
+    CustomPReLU, MyPReLU,
+    CustomSoftsign, MySoftsign,
+    CustomTanhshrink, MyTanhshrink,
+    CustomSoftmin, MySoftmin,
+    CustomSoftmax2d, MySoftmax2d,
 )
 
 from .conv import (
